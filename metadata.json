@@ -1,0 +1,11 @@
+{
+  "name": "Sistem Manajemen Muatan Kapal & Penumpang",
+  "description": "Aplikasi terintegrasi untuk manajemen kapal, tiket penumpang, kargo, pelacakan real-time, analitik armada, dan laporan dengan dukungan database Supabase, Neon DB, dan Firebase.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
+
