@@ -390,12 +390,41 @@ export async function fetchAnalytics() {
     if (res.ok) return await res.json();
   } catch {}
 
+  const ships = getLocalStore<Ship[]>('ships', initialShips);
+  const bookings = getLocalStore<Booking[]>('bookings', initialBookings);
+  const cargo = getLocalStore<Cargo[]>('cargo', initialCargo);
+
+  const totalShips = ships.length;
+  const activeVoyages = ships.filter(s => s.status === "Dalam Perjalanan").length;
+  const totalPassengersBooked = bookings.length;
+  const totalCargoTons = cargo.reduce((acc, c) => acc + (Number(c.weightTons) || 0), 0);
+  const totalRevenue = bookings.reduce((acc, b) => acc + (Number(b.price) || 0), 0) +
+                       cargo.reduce((acc, c) => acc + (Number(c.shippingCost) || 0), 0);
+
   return {
-    totalRevenue: 2845000000,
-    totalPassengers: 14280,
-    totalCargoTons: 8940,
-    activeShips: 5,
-    occupancyRate: 84.5
+    summary: {
+      totalShips,
+      activeVoyages,
+      totalPassengersBooked,
+      totalCargoTons,
+      totalRevenue
+    },
+    revenueByMonth: [
+      { month: "Jan", revenue: 145000000, passengers: 3200 },
+      { month: "Feb", revenue: 160000000, passengers: 3600 },
+      { month: "Mar", revenue: 185000000, passengers: 4100 },
+      { month: "Apr", revenue: 210000000, passengers: 4800 },
+      { month: "Mei", revenue: 240000000, passengers: 5500 },
+      { month: "Jun", revenue: 290000000, passengers: 6700 },
+      { month: "Jul", revenue: 340000000, passengers: 7800 },
+      { month: "Agu", revenue: 310000000, passengers: 7200 },
+      { month: "Sep", revenue: 260000000, passengers: 6100 }
+    ],
+    fleetUtilization: ships.map(s => ({
+      name: s.name,
+      capacity: s.capacityPassengers,
+      load: Math.floor(s.capacityPassengers * 0.75)
+    }))
   };
 }
 
